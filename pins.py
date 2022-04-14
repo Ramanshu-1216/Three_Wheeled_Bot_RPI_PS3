@@ -1,0 +1,30 @@
+import RPi.GPIO as GPIO
+import time
+
+
+DIR1 = 18
+DIR2 = 0
+DIR3 = 0
+PWM_PIN_1 = 0
+PWM_PIN_2 = 0
+PWM_PIN_3 = 0
+
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+
+GPIO.setup(DIR1, GPIO.OUT)
+GPIO.setup(DIR2, GPIO.OUT)
+GPIO.setup(DIR3, GPIO.OUT)
+GPIO.setup(PWM_PIN_1, GPIO.OUT)
+GPIO.setup(PWM_PIN_2, GPIO.OUT)
+GPIO.setup(PWM_PIN_3, GPIO.OUT)
+
+
+SPD1 = GPIO.PWM(PWM_PIN_1, 1000)
+SPD2 = GPIO.PWM(PWM_PIN_2, 1000)
+SPD3 = GPIO.PWM(PWM_PIN_3, 1000)
+
+SPD1.start(0)
+SPD2.start(0)
+SPD3.start(0)
