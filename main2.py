@@ -1,3 +1,4 @@
+from re import T
 import RPi.GPIO as GPIO
 import pygame
 import time
@@ -180,7 +181,7 @@ def THROW(speed):
 MSPEED = 0
 PWM = 75
 MAXSPEED = round((PWM/255) * 100)
-PWMSPD = [40, 40, 50, 50]
+PWMSPD = [10, 40, 60, 80]
 # PWMPTRCNT = 3
 PWMPTR = 0
 startThrow = False
@@ -193,7 +194,6 @@ btn = None
 # def deb():
 #     print("here")
 #     while True:
-#         # F(100)
 #         pygame.event.pump()
 #         for event in pygame.event.get():
 #             print(event)
@@ -204,9 +204,9 @@ while True:
     pygame.event.pump()
     for event in pygame.event.get():
         if event.type == pygame.JOYAXISMOTION:
-            x = round(joyStick.get_axis(2)*100)
-            y = round(joyStick.get_axis(3)*100)
-            spd = round(joyStick.get_axis(5)*100)/2 + 50
+            x = round(joyStick.get_axis(3)*100)
+            y = round(joyStick.get_axis(4)*100)
+            spd = round(joyStick.get_axis(2)*100)/2 + 50
             lx = round(joyStick.get_axis(0)*100)
             ly = round(joyStick.get_axis(1)*100)
             print(spd)
@@ -239,9 +239,12 @@ while True:
             btn = event.button
         elif event.type == pygame.JOYBUTTONUP:
             btn = event.button + 20
+        elif event.type == pygame.JOYHATMOTION:
+            hat = event.hat
 
+        
         if btn != None:
-            if btn == 4:
+            if btn == 2:
                 startThrow = True
                 PWMPTR = 0
             if btn == 3:
@@ -253,13 +256,13 @@ while True:
             elif btn == 0:
                 startThrow = True
                 PWMPTR = 3
-            elif btn == 7:
+            elif btn == 5:
                 startThrow = False
-            elif btn == 6:
+            elif btn == 4:
                 print("SHACT")
-                GPIO.output(SHACT, GPIO.LOW)
-                time.sleep(1)
                 GPIO.output(SHACT, GPIO.HIGH)
+                time.sleep(1)
+                GPIO.output(SHACT, GPIO.LOW)
             btn = None
     if startThrow:
         if MSPEED < PWMSPD[PWMPTR]:
